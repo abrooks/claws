@@ -100,8 +100,8 @@
 (defn restruct-prop [ename pname prop]
   (let [m (assoc prop "PropertyName" pname)]
     (match [m]
-           [{"PrimitiveItemType" _}])
-    ))
+           [{"PrimitiveItemType" _}])))
+
 
 #_
 (defn restruct-elem [ename etype elem]
@@ -123,11 +123,11 @@
   (->>
    (get spec-json "PropertyTypes")
    (vals)
-   (map #(get % "Properties") )
+   (map #(get % "Properties"))
    (mapcat vals)
    (map #(get % "Type"))
-   frequencies
-   )
+   frequencies)
+
 
   (clojure.pprint/pprint
    (map keys
@@ -146,11 +146,11 @@
                             (assoc "PropertyName" k)
                             (assoc "DataType" "Property")
                             (assoc "Property" (into []
-                                                      (for [[pk pv] (get v "Properties")]
-                                                        (let [m (assoc pv "PropertyName" pk)]
-                                                          (if (get pv "Type")
-                                                            m #_(update m "Type" #(identity {"PropertyName" %}))
-                                                            m)))))
+                                                    (for [[pk pv] (get v "Properties")]
+                                                      (let [m (assoc pv "PropertyName" pk)]
+                                                        (if (get pv "Type")
+                                                          m #_(update m "Type" #(identity {"PropertyName" %}))
+                                                          m)))))
                             (dissoc "Properties")))))
   (def txn
     (d/transact! conn (for [[k v] (get spec-json "ResourceTypes")]
@@ -180,11 +180,10 @@
          [?e "Name" "AWS::ElasticLoadBalancing::LoadBalancer.AccessLoggingPolicy"]
          [?e "Property" ?e2]
          [?e2 ?a ?v]] @conn)
-(d/q '[:find ?e
-         :where
-         [?e "Name" "AWS::ElasticLoadBalancing::LoadBalancer.AccessLoggingPolicy"]
-         ] @conn)
-  (let [conn ((d/create-conn schema))]
-    )
-  (q )
-  )
+ (d/q '[:find ?e
+          :where
+          [?e "Name" "AWS::ElasticLoadBalancing::LoadBalancer.AccessLoggingPolicy"]]
+       @conn)
+ (let [conn ((d/create-conn schema))])
+
+ (q))
